@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<link rel="stylesheet" href="jLexer.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="src/jLexer.javascript.css" type="text/css" media="screen" />
+	</head>
+	<body>
+		<div class="page">
+			<h1 class="logo">jLexer</h1>
+			<blockquote class="description">
+				<p>
+					jLexer is a javascript "lexing" library. jLexer takes javascript source code as input and creates an object oriented structure out of it.
+				</p>
+			</blockquote>
+			<div class="section inputSection">
+<textarea id="input">
+a = b;
+/*
+like what ever!
+*/
+z = function(bla, bla2) {
+}
+
+</textarea>
+<!--
+<textarea id="input">
+(function($) {
+
+	var jLexer = function jLexer(options) {
+		this.options = options;
+		this.model = {};
+		this.code = "";
+	};
+
+	jLexer.languages = {};
+
+	jLexer.addLanguage = function addLanguage(language) {
+		this.languages[language.id] = language;
+	};
+
+	jLexer.prototype.parse = function parse(code, languageId) {
+		var language,
+			statementsCollection,
+			tokensInCollection,
+			codeStream,
+			preToken,
+			latestCharacter,
+			token,
+			inStateChange,
+			model,
+			state, // The current state of the code stream
+			pointer, // The location pointer for the code stream
+			defaultState; // Current state of the codeStream: code|string|regexp|commentLine|commentBlock;
+
+		language = this.constructor.languages[languageId];
+		if (!language) {
+			return false;
+		}
+
+		this.code = code;
+
+		modelStream = [];
+		codeStream = code;
+		model = {};
+		tokensIn = {};
+		state = defaultState;
+		tokensInCollection = {};
+		statementsCollection = {};
+
+		// Find the default state
+		$.each(language.states, function(val) {
+			if (this.default) {
+				defaultState = this;
+			}
+		});
+
+		// Build a collection of statements
+		$.each(language.statements, function(val) {
+			statementsCollection[this.token] = this;
+		});
+
+		//Build the collection of inTokens
+		var states = language.states;
+		for (var iState in states) {
+			var state = states[iState]
+			var tokensIn = state.tokensIn;
+			var tokensOut = state.tokensOut;
+			state.tokensOutCollection = {};
+			state.tokensInCollection = {};
+			for (var iToken in tokensIn) {
+				var token = tokensIn[iToken];
+				state.tokensInCollection[token] = tokensInCollection[token] = state;
+			}
+			for (var iToken in tokensOut) {
+				var token = tokensOut[iToken];
+				state.tokensOutCollection[token] = state;
+			}
+		}
+
+		preToken = "";
+		token = "";
+		state = defaultState;
+		pointer = 0;
+		inStateChange = false;
+		latestCharacter = "";
+
+		function pushState(state) {
+			modelStream.push(state);
+		}
+
+		// This main loop is a non-recursize parsing of the code as
+		// a stream of characters parsed into tokens. The result is a 
+		var codeStreamLength = codeStream.length;
+		for (pointer = 0; pointer <= codeStreamLength; pointer = pointer + 1) {
+			latestCharacter = codeStream[pointer];
+			preToken = token;
+			token = token + latestCharacter;
+
+			// Set the next character if there is one
+	/*		console.log(
+				{state:state},
+				{token:token},
+				{latestCharacter:latestCharacter},
+				{inStateChange:inStateChange},
+				{tokensIncol:tokensInCollection[latestCharacter]},
+				{preToken:preToken}
+			);
+	*/
+			if (pointer === codeStreamLength) {
+				// If the end of the stream is reached, flush the last token
+				// TODO: refactor all push statements into a common function
+				pushState({
+					content: token,
+					state: state || defaultState
+				});
+				break;
+			}
+			if (state === defaultState) {
+				// Try to find the next state change with tokenIns
+				if (inStateChange) {
+					if (tokensInCollection[token]) {
+					} else {
+						// If the previous token is an inToken
+						// This confirms a state change
+						if (tokensInCollection[preToken]) {
+							state = tokensInCollection[preToken];
+							pointer = pointer - 1; // Put back the latest unmatched token in the stream
+							token = preToken; // Resest the tokens
+							latestCharacter = "";
+							inStateChange = false;
+						} else {
+						}
+					}
+				} else {
+					if (tokensInCollection[latestCharacter]) {
+						// If the latest character is an inToken
+						// This signals the potential of a stateChage
+						// Flush the whitespace if any
+						if (preToken) {
+							pushState({
+								content: preToken,
+								state: state,
+							});
+						}
+						token = latestCharacter;
+						inStateChange = true;
+					} else {
+					}
+				}
+			} else {
+				// Try to find the next state change with tokenOuts
+				if (state.tokensOut) {
+					// TODO: handle multi-char tokens out
+					if (state.tokensOutCollection[latestCharacter]) {
+						pushState({
+							content: token,
+							state: state
+						});
+						state = defaultState;
+						token = "";
+						inStateChange = false;
+					} else {
+					}
+				} else {
+					// the state is broken when no more tokensIn are found
+					if (state.tokensInCollection[latestCharacter]) {
+						// state not broken
+					} else {
+						// state is broken
+						pointer = pointer - 1; // Put back the latest unmatched token in the stream
+						pushState({
+							content: preToken,
+							state: state
+						});
+						state = defaultState;
+						token = "";
+						inStateChange = false;
+					}
+				}
+				//TODO: When a state is exitedm the lexed element is pushed to the model ... model.push();
+			}
+		}
+		// Parse statements
+		$.each(modelStream, function(val) {
+			if (this.state.label === "keyword") {
+				if (statementsCollection[this.content]) {
+					this.statement = statementsCollection[this.content];
+				}
+			}
+		});
+		this.modelStream = modelStream;
+		return this;
+	};
+
+	jLexer.prototype.render = function render() {
+		var dom = $("<" + "div class='code'></" + "div>");
+		console.dir(this.modelStream);
+		console.log("Rendering model", this.model);
+		return dom[0];
+	};
+
+	jLexer.prototype.renderModelStream = function renderModelStream() {
+		var html,
+			iToken,
+			token,
+			oddEven,
+			content,
+			stateHTMLPrefix,
+			lineNumber;
+
+		lineNumber = 1;
+		content = ""; 
+		stateHTMLPrefix = "";
+		stateHTMLSuffix = "<" + "/span>";
+		html = "<" + "div class='code-line code-line-odd'><" + "span class='code-linenumber'>" + lineNumber + "</" + "span>";
+
+		$.each(this.modelStream, function(val) {
+			if (this.content) {
+				content = this.content;
+				content = content.replace(/ /g, "&nbsp;");
+				content = content.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+				if (this.type === "linefeed") {
+					for (var character in content) {
+						lineNumber = lineNumber + 1;
+						oddEven = (lineNumber % 2) ? "odd": "even"; 
+						html = html + "</" + "span>&nbsp;<" + "/div><" + "div class='code-line code-line-" + oddEven + "'><" + "span class='code-linenumber'>" + lineNumber + "<" + "/span>";
+					}
+				} else {
+					stateHTMLPrefix = "<" + "span title='" + this.state.title + "' class='code-" + this.state.label + "'>";
+					if (this.state.hasLinefeeds) {
+						var linefeedRegexp = /\n/;
+						var replacementStr = "";
+						while (content.match(linefeedRegexp)) {
+							lineNumber = lineNumber + 1;
+							oddEven = (lineNumber % 2) ? "odd" : "even";
+							replacementStr = stateHTMLSuffix + "&nbsp;</" + "div><div class='code-line code-line-" + oddEven + "'><" + "span class='code-linenumber'>" + lineNumber + "</span>" + stateHTMLPrefix;
+							content = content.replace(linefeedRegexp, replacementStr);
+						}
+					}
+					html = html + stateHTMLPrefix + content + stateHTMLSuffix;
+				}
+			}
+		});
+		html = html + "<" + "/div>"
+		return html;
+	}
+
+	window.jLexer = jLexer
+
+})(jQuery);
+
+</textarea>
+-->
+			</div>
+			<div class="section resultsSection">
+				<div id="results">
+					<div class="code javascript-code">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hidden">
+			<script type="text/javascript" src="./libs/jquery/jquery.1.3.2.min.js"></script>
+			<script type="text/javascript" src="./src/jLexer.js"></script>
+			<script type="text/javascript" src="./src/jLexer.javascript.js"></script>
+			<script type="text/javascript" src="./src/jLexer.ui.js"></script>
+		</div>
+	</body>
+</html>

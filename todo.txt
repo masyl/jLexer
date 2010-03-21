@@ -1,0 +1,47 @@
+Currently doing:
+
+	- Create an object model from the model stream
+	- Link model stream and object model elements
+	- Render the model as a tree
+	
+
+Lexer Todo:
+	- Render information specific to the token... not just the generic type
+	- Only pre-parse the language setting once, instead of each time something is parsed
+	- Enable "interupt" pattern for the parsing process to prevent long code parsing to block the UI.
+	- support for tokenStart to differentiate numbers from variables
+	- differentiate between . as a member operator or a decimal point
+	- Support differentiating tokens comming after the ".property" (Ex.: obj.function <- function in not a statement, but a property)
+
+Unsupported code cases:
+	- Support numbers of all formats
+	- Quote escaping inside strings such as "\""
+	- show character escaping in strings
+
+UI Todo:
+	- Remember source code from cookie
+
+Bugs:
+
+--------------------------------------------------------------------------------------------------
+
+Release v0.3 :
+
+
+Release v0.2 :
+	- Support basic numbers
+	- support for tokenStart to differentiate numbers from variables containing numbers
+	- Last char rendered in the HTML is "undefined"
+	- Multi character out tokens such as /* */
+	- Support for types instead of just states, offering an additionnal level of decoupling between the parsed stream states and the actual code semantics
+
+Release v0.1 :
+	- Color coded html output
+	- Reparse automatically after 2 or 3 second of not typing in the box
+	- Function to render the model stream to html
+
+
+--------------------------------------------------------------------------------------------------
+
+
+

@@ -1,0 +1,164 @@
+/*
+	Standard tags
+*/
+	html {
+		height: 100%;
+	}
+	body {
+		height: 100%;
+		position: relative;
+		background: #ff9;
+		color: #000;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	textarea,
+	input,
+	body {
+		font: 1em "Arial";
+	}
+	button {
+		height: 60px;
+		width: 60px;
+		float: left;
+		font-size: 1.1em;
+		font-weight: bold;
+		margin-left: 10px;
+	}
+
+	a:links,
+	a:visited {
+		color: #00F;
+		text-decoration: underline;
+	}
+	ul {
+		margin: 0;
+	}
+	h1 {
+		margin: 0px;
+		padding: 0px;
+		text-indent: -1000em;
+	}
+	h1, h2, h3 {
+		position: relative;
+	}
+	h2 {
+		font-size: 1.3em;
+		margin: 0px 0px 5px 0px;
+	}
+
+/*
+	utilitary classes
+*/
+	.clear {
+		clear: both;
+	}
+	.hidden {
+		display: none;
+	}
+
+/*
+	Unsorted...
+*/
+
+	.page {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0px;
+		left: 0px;
+	}
+	.backgroundFade {
+		position: absolute;
+		width: 100%;
+		top: 0px;
+		height: 268px;
+	}
+	.section {
+		position: relative;
+		width: 100%;
+		z-index: 100;
+		margin-bottom: 10px;
+	}
+	.logo {
+		display: none;
+	}
+	.description {
+		display: none;
+		position: absolute;
+		top: 0px;
+		padding-left: 20px;
+		border-left: 1px solid #333;
+		left: 200px;
+		width: 470px;
+		font-size: 0.9em;
+		line-height: 1.3em;
+	}
+	.description strong {
+	}
+	textarea {
+		padding: 5px 0px 0px 5px;
+	}
+	.inputSection {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 40%;
+		overflow: hidden;
+	}
+	.resultsSection {
+		position: absolute;
+		top: 0px;
+		left: 40%;
+		height: 100%;
+		width: 60%;
+		overflow: scroll;
+	}
+	.highlightsSection {
+		float: left;
+		width: 720px;
+	}
+	#input {
+		width: 96%;
+		height: 96%;
+	}
+	#resultsList {
+		list-style: none;
+		overflow: hidden;
+		padding: 0px;
+		margin: 10px 0px 0px 0px;
+	}
+	#resultsList li {
+		position: relative;
+		cursor: pointer;
+		list-style: none;
+		padding: 3px;
+		margin: 0xp;
+	}
+	#resultsList li.highlighted {
+		font-weight: bold;
+		background: #444;
+		left: 5px;
+	}
+	#resultsList li a:visited,
+	#resultsList li a:link {
+		display: block;
+	}
+	#resultsList li a:hover {
+		background: #222;
+	}
+	#resultsList li.highlighted a:hover {
+		background: #666;
+	}
+
+	.code {
+		font-family: "courier new";
+		font-size: 0.8em;
+		letter-spacing: -0.05em;
+		line-height: 1.5em;
+		margin: 0px;
+		padding: 20px;
+	}
+

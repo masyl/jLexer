@@ -1,0 +1,64 @@
+.javascript-code .code-line {
+	background: #fff;
+	position: relative;
+	padding: 2px 20px 2px 50px;
+	border-bottom: 1px solid #f3f3f3;
+	min-height: 1.5em;
+}
+.javascript-code .code-line-odd {
+	background: #f5f5f5;
+}
+
+.javascript-code .code-linenumber {
+	display: block;
+	font-family: "courier new";
+	font-size: 0.7em;
+	color: #999;
+	position: absolute;
+	left: 0px;
+	padding: 0px 0px 0px 5px;
+	height: 100%;
+	width: 30px;
+	top: 0px;
+	border-right: 1px solid #e8e8e8;
+	line-height: 2em;
+	background: #f7f7f7;
+}
+.javascript-code .code-line-odd .code-linenumber {
+	border-right: 1px solid #e2e2e2;
+	background: #f0f0f0;
+}
+
+.javascript-code .code-statement {
+	color: #22D;
+	cursor: pointer;
+}
+
+.javascript-code .code-statement {
+	color: #353;
+}
+
+.javascript-code .focus {
+	background: #FF0 !important;
+	color: #000 !important;
+}
+
+.javascript-code .code-syntax {
+	color: #666;
+}
+
+.javascript-code .code-number {
+	color: #F66;
+	font-weight: bold;
+}
+
+.javascript-code .code-singlequotestring,
+.javascript-code .code-doublequotestring {
+	color: #090;
+}
+
+.javascript-code .code-commentblock,
+.javascript-code .code-comment {
+	font-weight: bold;
+	color: #00F;
+}

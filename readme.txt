@@ -1,0 +1,13 @@
+NOTE: This code is abandonned legacy and whatever value was here will be move into the more serious JaJa library found here: http://jaja.masyl.net/
+
+-----
+
+jLexer is code analysis library which deconstructs javascript into an object model.
+
+-----
+
+Copyright Mathieu Sylvain, 2009
+
+This work is in the Public Domain. To view a copy of the public domain certification, visit http://creativecommons.org/licenses/publicdomain/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+
+
